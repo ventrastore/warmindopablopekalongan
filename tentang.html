@@ -22,9 +22,10 @@
             background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
             padding-top: 100px;
             padding-bottom: 50px;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
         }
 
-        /* --- NAVBAR (Tanpa Logo) --- */
+        /* --- NAVBAR --- */
         .navbar {
             position: fixed;
             top: 25px;
@@ -40,7 +41,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
         }
 
         .nav-brand {
@@ -51,7 +52,7 @@
             letter-spacing: 2px;
         }
 
-        .nav-menu { display: flex; gap: 8px; transition: 0.3s; }
+        .nav-menu { display: flex; gap: 8px; }
 
         .nav-link {
             font-family: 'Poppins', sans-serif;
@@ -68,51 +69,51 @@
 
         .nav-link.active { background: var(--w-yellow); color: var(--dark); }
 
-        /* ICON STYLING MOBILE */
         .menu-icon, .close-icon {
             display: none;
             color: var(--w-red);
             font-size: 1.5rem;
-            font-weight: bold;
             cursor: pointer;
         }
 
+        /* --- MOBILE NAVBAR --- */
         @media (max-width: 768px) {
             .navbar {
-                left: auto;
-                right: 20px;
-                top: 20px;
-                transform: none;
                 width: 60px;
                 height: 60px;
                 padding: 0;
-                overflow: hidden;
+                right: 20px;
+                left: auto;
+                transform: none;
                 justify-content: center;
                 border-radius: 30px;
             }
             .navbar.active-nav {
                 width: calc(100% - 40px);
-                height: 65px; 
+                height: 65px;
                 padding: 0 15px;
-                justify-content: space-between;
                 border-radius: 100px;
+                justify-content: space-between;
             }
             .nav-brand { display: none; }
-            .nav-menu { opacity: 0; visibility: hidden; gap: 2px; display: flex; flex: 1; justify-content: center; }
-            .navbar.active-nav .nav-menu { opacity: 1; visibility: visible; }
-            .nav-link { font-size: 0.75rem; padding: 8px 10px; }
-            .menu-icon { display: block; position: absolute; font-size: 1.8rem; }
+            .nav-menu { display: none; }
+            .navbar.active-nav .nav-menu { 
+                display: flex; 
+                flex: 1; 
+                justify-content: center; 
+                gap: 2px;
+            }
+            .nav-link { font-size: 0.7rem; padding: 8px 10px; }
+            .menu-icon { display: block; position: absolute; }
             .navbar.active-nav .menu-icon { display: none; }
-            .close-icon { display: none; }
             .navbar.active-nav .close-icon { display: block; order: 2; }
         }
 
         /* --- CONTENT AREA --- */
         main { max-width: 1000px; margin: 0 auto; padding: 0 20px; text-align: center; }
 
-        /* LOGO TETAP ADA DI TENAH CONTENT */
         .main-logo {
-            width: 220px; 
+            width: 180px; 
             height: auto;
             margin-bottom: 20px;
             filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.4));
@@ -120,7 +121,7 @@
 
         .header-title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3.5rem, 12vw, 6rem);
+            font-size: clamp(3rem, 15vw, 6rem);
             line-height: 0.9;
             margin-bottom: 10px;
             background: linear-gradient(180deg, #fff 40%, #555 100%);
@@ -128,7 +129,15 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* CARD STYLE DENGAN ANIMASI BORDER */
+        .sub-header {
+            color: var(--w-red); 
+            letter-spacing: 4px; 
+            font-weight: 800; 
+            font-family: 'Bebas Neue'; 
+            font-size: 1.2rem;
+        }
+
+        /* --- CARD STYLE --- */
         .about-card {
             background: var(--card-bg);
             border-radius: 35px;
@@ -150,14 +159,14 @@
         .card-inner {
             background: var(--card-bg);
             border-radius: 33px;
-            padding: 50px;
+            padding: 40px; /* Default Desktop */
             position: relative;
             z-index: 1;
         }
 
         .about-text {
-            font-size: 1.15rem;
-            line-height: 1.9;
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #ddd;
             margin-bottom: 25px;
         }
@@ -167,31 +176,40 @@
 
         .quote {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 8vw, 2.5rem);
             color: white;
             border-left: 6px solid var(--w-red);
-            padding-left: 25px;
-            margin: 40px 0;
+            padding-left: 20px;
+            margin: 30px 0;
             line-height: 1.1;
         }
 
         .grid-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 40px;
         }
 
         .stat-item {
             text-align: center;
             background: rgba(255,255,255,0.03);
-            padding: 30px 20px;
-            border-radius: 25px;
+            padding: 20px;
+            border-radius: 20px;
         }
 
-        .stat-item h3 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--w-yellow); }
-        .stat-item p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        .stat-item h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--w-yellow); }
+        .stat-item p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
 
+        /* --- MOBILE ADJUSTMENTS --- */
+        @media (max-width: 600px) {
+            body { padding-top: 120px; }
+            .card-inner { padding: 25px 20px; } /* Padding lebih kecil agar teks luas */
+            .about-text { font-size: 1rem; text-align: justify; }
+            .sub-header { letter-spacing: 2px; font-size: 1rem; }
+            .grid-stats { grid-template-columns: 1fr 1fr; } /* Statistik jadi 2 kolom */
+            .stat-item:last-child { grid-column: span 2; } /* Item terakhir penuh di bawah */
+        }
     </style>
 </head>
 <body>
@@ -213,7 +231,7 @@
     
     <header style="margin-bottom: 30px;">
         <h1 class="header-title">OUR STORY</h1>
-        <p style="color: var(--w-red); letter-spacing: 8px; font-weight: 800; font-family: 'Bebas Neue'; font-size: 1.5rem;">DI BALIK MEJA PABLO</p>
+        <p class="sub-header">DI BALIK MEJA PABLO</p>
     </header>
 
     <div class="about-card">
@@ -227,7 +245,7 @@
             </div>
 
             <p class="about-text">
-                Dengan resep rahasia berkonsep <span class="highlight-yellow">"Mafia Style"</span>, setiap mangkuk mie diracik melalui seleksi ketat bumbu dan tingkat kematangan yang presisi. Karakter rasanya tegas, kuat, namun tetap seimbang dan ramah di lidah. Pengunjung bebas menentukan level pedas, memilih topping favorit, lalu melengkapinya dengan sajian kopi hangat maupun dingin yang diracik khusus untuk menemani waktu bersantai. Suasana yang dihadirkan sederhana namun berkelas—nyaman untuk nongkrong, ngobrol, atau sekadar melepas penat.
+                Dengan resep rahasia berkonsep <span class="highlight-yellow">"Mafia Style"</span>, setiap mangkuk mie diracik melalui seleksi ketat bumbu dan tingkat kematangan yang presisi. Karakter rasanya tegas, kuat, namun tetap seimbang. Pengunjung bebas menentukan level pedas, memilih topping favorit, lalu melengkapinya dengan sajian kopi yang diracik khusus.
             </p>
 
             <div class="grid-stats">
@@ -240,8 +258,8 @@
                     <p>Siaga Open</p>
                 </div>
                 <div class="stat-item">
-                    <h3>Fast Order</h3>
-                    <p>Pelayanan Cepat</p>
+                    <h3>FAST</h3>
+                    <p>Pelayanan</p>
                 </div>
             </div>
         </div>
@@ -255,12 +273,11 @@
             nav.classList.toggle('active-nav');
         }
     }
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => e.stopPropagation());
+    // Mencegah menu tertutup saat klik link di dalamnya
+    document.querySelector('.nav-menu').addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 </script>
 
 </body>
-
 </html>
-
