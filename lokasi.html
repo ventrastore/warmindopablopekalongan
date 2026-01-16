@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warmindo Pablo | Lokasi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --w-red: #cc0000;
+            --w-yellow: #ffcc00;
+            --dark: #000000;
+            --card-bg: #0c0c0c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 1000;
+            background: #ffffff;
+            border-radius: 100px;
+            padding: 10px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--w-red);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu { display: flex; gap: 8px; transition: 0.3s; }
+
+        .nav-link {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 50px;
+            white-space: nowrap;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-link.active { background: var(--w-yellow); color: var(--dark); }
+        .nav-link:hover:not(.active) { background: #f0f0f0; }
+
+        .menu-icon, .close-icon {
+            display: none;
+            color: var(--w-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .navbar {
+                left: auto;
+                right: 20px;
+                top: 20px;
+                transform: none;
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                overflow: hidden;
+                justify-content: center;
+                border-radius: 30px;
+            }
+
+            .navbar.active-nav {
+                width: calc(100% - 40px);
+                height: 65px; 
+                padding: 0 15px;
+                justify-content: space-between;
+                border-radius: 100px;
+            }
+
+            .nav-brand { display: none; }
+            
+            .nav-menu { 
+                opacity: 0; 
+                visibility: hidden; 
+                gap: 2px; 
+                display: flex;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .navbar.active-nav .nav-menu { 
+                opacity: 1; 
+                visibility: visible; 
+            }
+
+            .nav-link { font-size: 0.75rem; padding: 8px 12px; }
+
+            .menu-icon { display: block; position: absolute; font-size: 1.8rem; }
+            .navbar.active-nav .menu-icon { display: none; }
+
+            .close-icon { display: none; font-size: 1.4rem; }
+            .navbar.active-nav .close-icon { display: block; order: 2; }
+        }
+
+        /* --- CONTENT LOKASI --- */
+        main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        
+        .logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 5rem);
+            line-height: 0.9;
+            background: linear-gradient(180deg, #fff 40%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+        
+        .menu-card { 
+            background: var(--card-bg); 
+            border-radius: 25px; 
+            padding: 2px; 
+            position: relative; 
+            overflow: hidden; 
+            grid-column: span 12; 
+        }
+
+        .menu-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--w-red), transparent 30%);
+            animation: rotate-border 6s linear infinite;
+        }
+
+        @keyframes rotate-border { 100% { transform: rotate(360deg); } }
+
+        .card-inner { 
+            background: var(--card-bg); 
+            border-radius: 23px; 
+            padding: 30px; 
+            position: relative; 
+            z-index: 1; 
+            height: 100%; 
+        }
+
+        @media (min-width: 900px) { 
+            .span-7 { grid-column: span 7; } 
+            .span-5 { grid-column: span 5; } 
+        }
+
+        .category-header { 
+            border-left: 5px solid var(--w-red); 
+            padding-left: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        .category-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+            /* Filter estetika agar peta tampak menyatu dengan tema dark */
+            filter: grayscale(1) contrast(1.2) invert(0.9);
+            border: 1px solid #333;
+        }
+
+        .info-item { margin-bottom: 20px; }
+        .info-item h4 { color: var(--w-red); font-family: 'Bebas Neue'; letter-spacing: 2px; }
+        .info-item p { color: #ccc; font-size: 0.95rem; }
+
+        .btn-maps {
+            display: inline-block;
+            background: var(--w-red);
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        
+        .btn-maps:hover {
+            background: var(--w-yellow);
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="mainNav" onclick="toggleMenu()">
+    <div class="menu-icon">☰</div> 
+    <div class="close-icon">✕</div>
+    <a href="index.html" class="nav-brand">WARMINDO PABLO</a>
+    <div class="nav-menu">
+        <a href="index.html" class="nav-link">MENU</a>
+        <a href="tentang.html" class="nav-link">TENTANG</a>
+        <a href="lokasi.html" class="nav-link active">LOKASI</a>
+        <a href="wifi.html" class="nav-link">WIFI</a>
+    </div>
+</nav>
+
+<main>
+    <header style="margin-bottom: 40px;">
+        <h1 class="logo-text">MARKAS PABLO</h1>
+        <p style="color: var(--w-red); letter-spacing: 5px; font-weight: 800; font-family: 'Bebas Neue';">WARUNG MAFIA</p>
+    </header>
+
+    <div class="container">
+        <div class="menu-card span-7">
+            <div class="card-inner">
+                <div class="category-header"><h2>TITIK KOORDINAT</h2></div>
+                <div class="map-wrapper">
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9190864027423!2d109.66581977410353!3d-6.900280193098972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70250cd3c4c33f%3A0xc5bbdb7b766391a7!2sWARMINDO%20PABLO!5e0!3m2!1sen!2sid!4v1768559103567!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-card span-5">
+            <div class="card-inner">
+                <div class="category-header"><h2>SAFE HOUSE</h2></div>
+                <div class="info-item">
+                    <h4>ALAMAT</h4>
+                    <p>Jl. Podosugih No. 24, Gg. 3 (III), Kec. Pekalongan Barat, Kota Pekalongan, Jawa Tengah</p>
+                </div>
+                <div class="info-item">
+                    <h4>OPERASIONAL</h4>
+                    <p>24 JAM NON-STOP</p>
+                </div>
+                <a href="https://maps.app.goo.gl/p4HmRKjUAmaom68a6" target="https://maps.app.goo.gl/p4HmRKjUAmaom68a6" class="btn-maps">BUKA GOOGLE MAPS</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function toggleMenu() {
+        const nav = document.getElementById('mainNav');
+        if (window.innerWidth <= 768) {
+            nav.classList.toggle('active-nav');
+        }
+    }
+
+    // Mencegah link memicu fungsi toggleMenu() milik navbar
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+        });
+    });
+</script>
+
+</body>
+</html>

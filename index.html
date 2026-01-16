@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warmindo Pablo | Menu Mafia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --w-red: #cc0000;
+            --w-yellow: #ffcc00;
+            --dark: #000000;
+            --card-bg: #0c0c0c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 1000;
+            background: #ffffff;
+            border-radius: 100px;
+            padding: 10px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--w-red);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu { display: flex; gap: 8px; transition: 0.3s; }
+
+        .nav-link {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 50px;
+            white-space: nowrap;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-link.active { 
+            background: var(--w-yellow); 
+            color: var(--dark); 
+        }
+
+        .nav-link:hover:not(.active) {
+            background: #f0f0f0;
+        }
+
+        /* ICON STYLING */
+        .menu-icon, .close-icon {
+            display: none;
+            color: var(--w-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* --- MOBILE RESPONSIVE FIX --- */
+        @media (max-width: 768px) {
+            .navbar {
+                left: auto;
+                right: 20px;
+                top: 20px;
+                transform: none;
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                overflow: hidden;
+                justify-content: center;
+                border-radius: 30px;
+            }
+
+            .navbar.active-nav {
+                width: calc(100% - 40px);
+                height: 65px; 
+                padding: 0 15px;
+                justify-content: space-between;
+                border-radius: 100px;
+            }
+
+            .nav-brand { display: none; }
+            
+            .nav-menu { 
+                opacity: 0; 
+                visibility: hidden; 
+                gap: 2px; 
+                display: flex;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .navbar.active-nav .nav-menu { 
+                opacity: 1; 
+                visibility: visible; 
+            }
+
+            .nav-link { 
+                font-size: 0.75rem; /* Poppins lebih lebar, jadi 0.75rem sudah cukup jelas */
+                padding: 8px 12px; 
+                letter-spacing: 0;
+            }
+
+            .menu-icon { display: block; position: absolute; font-size: 1.8rem; }
+            .navbar.active-nav .menu-icon { display: none; }
+
+            .close-icon { display: none; font-size: 1.4rem; }
+            .navbar.active-nav .close-icon { display: block; order: 2; }
+        }
+
+        /* --- CONTENT AREA --- */
+        main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        
+        .logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 5rem);
+            line-height: 0.9;
+            background: linear-gradient(180deg, #fff 40%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+        
+        .menu-card { 
+            background: var(--card-bg); 
+            border-radius: 25px; 
+            padding: 2px; 
+            position: relative; 
+            overflow: hidden; 
+            grid-column: span 12; 
+        }
+
+        @media (min-width: 900px) { 
+            .span-7 { grid-column: span 7; } 
+            .span-5 { grid-column: span 5; } 
+        }
+
+        .menu-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--w-red), transparent 30%);
+            animation: rotate-border 6s linear infinite;
+        }
+
+        @keyframes rotate-border { 100% { transform: rotate(360deg); } }
+
+        .card-inner { 
+            background: var(--card-bg); 
+            border-radius: 23px; 
+            padding: 30px; 
+            position: relative; 
+            z-index: 1; 
+            height: 100%; 
+        }
+
+        .hero-img { 
+            width: 100%; 
+            height: 350px; 
+            object-fit: cover; 
+            border-radius: 20px; 
+            opacity: 0.8; 
+            margin-bottom: 0; 
+        }
+
+        .category-header { 
+            border-left: 5px solid var(--w-red); 
+            padding-left: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        .category-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .menu-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 0 20px;
+        }
+
+        .menu-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 12px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+
+        .price { 
+            color: var(--w-yellow); 
+            font-weight: 700; 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 1rem; 
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="mainNav" onclick="toggleMenu()">
+    <div class="menu-icon">☰</div> 
+    <div class="close-icon">✕</div>
+    <a href="index.html" class="nav-brand">WARMINDO PABLO</a>
+    <div class="nav-menu">
+        <a href="index.html" class="nav-link active">MENU</a>
+        <a href="tentang.html" class="nav-link">TENTANG</a>
+        <a href="lokasi.html" class="nav-link">LOKASI</a>
+        <a href="wifi.html" class="nav-link">WIFI</a>
+    </div>
+</nav>
+
+<main>
+    <header style="margin-bottom: 40px;">
+        <h1 class="logo-text">PABLO MENU</h1>
+        <p style="color: var(--w-red); letter-spacing: 5px; font-weight: 800; font-family: 'Bebas Neue';">WARUNG MAFIA</p>
+    </header>
+
+    <div class="container">
+        <div class="menu-card">
+            <div class="card-inner" style="padding: 0;">
+                <img src="MENU.png" class="hero-img" alt="Warmindo Pablo">
+            </div>
+        </div>
+
+        <div class="menu-card span-7">
+            <div class="card-inner">
+                <div class="category-header"><h2>DRINK</h2></div>
+                <div class="menu-grid">
+                    <div class="menu-item"><span>Cappucino</span><span class="price">6.000</span></div>
+                    <div class="menu-item"><span>Beng Beng</span><span class="price">6.000</span></div>
+                    <div class="menu-item"><span>Milo</span><span class="price">5.000</span></div>
+                    <div class="menu-item"><span>Kopi Hitam</span><span class="price">5.000</span></div>
+                    <div class="menu-item"><span>Jeruk Es/Panas</span><span class="price">5.000</span></div>
+                    <div class="menu-item"><span>Teh Es/Panas</span><span class="price">3.000</span></div>
+                    <div class="menu-item"><span>Es Nutrisari</span><span class="price">4.000</span></div>
+                    <div class="menu-item"><span>Es Kampul</span><span class="price">5.000</span></div>
+                    <div class="menu-item"><span>Matcha</span><span class="price">6.000</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-card span-5">
+            <div class="card-inner">
+                <div class="category-header"><h2>ANEKA MIE</h2></div>
+                <div class="menu-item"><span>Tanpa Telur</span><span class="price">7.000</span></div>
+                <div class="menu-item"><span>Pakai Telur</span><span class="price">10.000</span></div>
+                <div class="menu-item"><span>Mie Dok Dok</span><span class="price">15.000</span></div>
+                <div class="menu-item"><span>Magelangan</span><span class="price">15.000</span></div>
+            </div>
+        </div>
+
+        <div class="menu-card span-5">
+            <div class="card-inner">
+                <div class="category-header"><h2>NASI GORENG</h2></div>
+                <div class="menu-item"><span>Nasgor Biasa</span><span class="price">12.000</span></div>
+                <div class="menu-item"><span>Nasgor VIP</span><span class="price">15.000</span></div>
+                <div class="menu-item"><span>Nasgor Orak Arik</span><span class="price">12.000</span></div>
+                <div class="menu-item"><span>Nasgor Orak Arik VIP</span><span class="price">15.000</span></div>
+            </div>
+        </div>
+
+        <div class="menu-card span-7">
+            <div class="card-inner">
+                <div class="category-header"><h2>SIDE MENU</h2></div>
+                <div class="menu-grid">
+                    <div class="menu-item"><span>Nasi Telur Dadar</span><span class="price">10.000</span></div>
+                    <div class="menu-item"><span>Nasi Omelet</span><span class="price">15.000</span></div>
+                    <div class="menu-item"><span>Nasi Putih</span><span class="price">5.000</span></div>
+                    <div class="menu-item"><span>Soto Daging Sapi + Esteh</span><span class="price">20.000</span></div>
+                    <div class="menu-item"><span>Sosis Goreng</span><span class="price">10.000</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function toggleMenu() {
+        const nav = document.getElementById('mainNav');
+        if (window.innerWidth <= 768) {
+            nav.classList.toggle('active-nav');
+        }
+    }
+
+    // Menghindari menu tertutup saat link diklik
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
+</script>
+
+</body>
+</html>
