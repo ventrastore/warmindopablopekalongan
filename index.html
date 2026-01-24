@@ -13,6 +13,58 @@
             --card-bg: #0c0c0c;
         }
 
+        /* --- LOADING SCREEN STYLE --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: pulse-logo 1.5s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--w-red), var(--w-yellow), transparent);
+            animation: loading-slide 1.2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--w-red)); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        @keyframes loading-slide { 100% { left: 100%; } }
+
+        .loader-hidden { opacity: 0; visibility: hidden; }
+
+        /* --- BASE STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -22,6 +74,7 @@
             background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
             padding-top: 100px;
             padding-bottom: 50px;
+            overflow-x: hidden;
         }
 
         /* --- NAVBAR --- */
@@ -51,7 +104,7 @@
             letter-spacing: 2px;
         }
 
-        .nav-menu { display: flex; gap: 8px; transition: 0.3s; }
+        .nav-menu { display: flex; gap: 8px; }
 
         .nav-link {
             font-family: 'Poppins', sans-serif;
@@ -66,86 +119,53 @@
             text-transform: uppercase;
         }
 
-        .nav-link.active { 
-            background: var(--w-yellow); 
-            color: var(--dark); 
-        }
+        .nav-link.active { background: var(--w-yellow); color: var(--dark); }
 
-        .nav-link:hover:not(.active) {
-            background: #f0f0f0;
-        }
-
-        /* ICON STYLING */
         .menu-icon, .close-icon {
             display: none;
             color: var(--w-red);
             font-size: 1.5rem;
-            font-weight: bold;
             cursor: pointer;
         }
 
-        /* --- MOBILE RESPONSIVE FIX --- */
+        /* --- MOBILE NAVBAR --- */
         @media (max-width: 768px) {
-            .navbar {
-                left: auto;
-                right: 20px;
-                top: 20px;
-                transform: none;
-                width: 60px;
-                height: 60px;
-                padding: 0;
-                overflow: hidden;
-                justify-content: center;
-                border-radius: 30px;
-            }
-
-            .navbar.active-nav {
-                width: calc(100% - 40px);
-                height: 65px; 
-                padding: 0 15px;
-                justify-content: space-between;
-                border-radius: 100px;
-            }
-
+            .navbar { left: auto; right: 20px; top: 20px; transform: none; width: 60px; height: 60px; padding: 0; justify-content: center; border-radius: 30px; }
+            .navbar.active-nav { width: calc(100% - 40px); height: 65px; padding: 0 15px; justify-content: space-between; border-radius: 100px; }
             .nav-brand { display: none; }
-            
-            .nav-menu { 
-                opacity: 0; 
-                visibility: hidden; 
-                gap: 2px; 
-                display: flex;
-                flex: 1;
-                justify-content: center;
-            }
-            
-            .navbar.active-nav .nav-menu { 
-                opacity: 1; 
-                visibility: visible; 
-            }
-
-            .nav-link { 
-                font-size: 0.75rem; /* Poppins lebih lebar, jadi 0.75rem sudah cukup jelas */
-                padding: 8px 12px; 
-                letter-spacing: 0;
-            }
-
-            .menu-icon { display: block; position: absolute; font-size: 1.8rem; }
+            .nav-menu { display: none; flex: 1; justify-content: center; gap: 2px; }
+            .navbar.active-nav .nav-menu { display: flex; }
+            .nav-link { font-size: 0.75rem; padding: 8px 12px; }
+            .menu-icon { display: block; position: absolute; }
             .navbar.active-nav .menu-icon { display: none; }
-
-            .close-icon { display: none; font-size: 1.4rem; }
             .navbar.active-nav .close-icon { display: block; order: 2; }
         }
 
         /* --- CONTENT AREA --- */
         main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         
+        /* HEADER DI KIRI */
+        .header-left {
+            text-align: left; /* Menjaga teks di kiri */
+            margin-bottom: 40px;
+        }
+
         .logo-text {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 10vw, 5rem);
+            font-size: clamp(3.5rem, 12vw, 5.5rem);
             line-height: 0.9;
             background: linear-gradient(180deg, #fff 40%, #555 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .sub-header-text {
+            color: var(--w-red); 
+            letter-spacing: 5px; 
+            font-weight: 800; 
+            font-family: 'Bebas Neue';
+            font-size: 1.2rem;
+            margin-top: 5px;
         }
 
         .container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
@@ -187,7 +207,6 @@
             object-fit: cover; 
             border-radius: 20px; 
             opacity: 0.8; 
-            margin-bottom: 0; 
         }
 
         .category-header { 
@@ -216,15 +235,16 @@
             font-size: 0.95rem;
         }
 
-        .price { 
-            color: var(--w-yellow); 
-            font-weight: 700; 
-            font-family: 'Poppins', sans-serif; 
-            font-size: 1rem; 
-        }
+        .price { color: var(--w-yellow); font-weight: 700; font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body>
+
+<div id="loader">
+    <img src="Logo.png" alt="Pablo Logo" class="loader-logo">
+    <div class="loader-bar"></div>
+    <p style="margin-top: 15px; font-family: 'Bebas Neue'; letter-spacing: 2px; color: var(--w-yellow);">LOADING MENU MAFIA...</p>
+</div>
 
 <nav class="navbar" id="mainNav" onclick="toggleMenu()">
     <div class="menu-icon">☰</div> 
@@ -234,14 +254,13 @@
         <a href="index.html" class="nav-link active">MENU</a>
         <a href="tentang.html" class="nav-link">TENTANG</a>
         <a href="lokasi.html" class="nav-link">LOKASI</a>
-        <a href="wifi.html" class="nav-link">WIFI</a>
     </div>
 </nav>
 
 <main>
-    <header style="margin-bottom: 40px;">
+    <header class="header-left">
         <h1 class="logo-text">PABLO MENU</h1>
-        <p style="color: var(--w-red); letter-spacing: 5px; font-weight: 800; font-family: 'Bebas Neue';">WARUNG MAFIA</p>
+        <p class="sub-header-text">WARUNG MAFIA</p>
     </header>
 
     <div class="container">
@@ -295,7 +314,7 @@
                     <div class="menu-item"><span>Nasi Telur Dadar</span><span class="price">10.000</span></div>
                     <div class="menu-item"><span>Nasi Omelet</span><span class="price">15.000</span></div>
                     <div class="menu-item"><span>Nasi Putih</span><span class="price">5.000</span></div>
-                    <div class="menu-item"><span>Soto Daging Sapi + Esteh</span><span class="price">20.000</span></div>
+                    <div class="menu-item"><span>Soto Daging + Esteh</span><span class="price">20.000</span></div>
                     <div class="menu-item"><span>Sosis Goreng</span><span class="price">10.000</span></div>
                 </div>
             </div>
@@ -304,6 +323,14 @@
 </main>
 
 <script>
+    // PRELOADER SCRIPT
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('loader-hidden');
+        }, 1200);
+    });
+
     function toggleMenu() {
         const nav = document.getElementById('mainNav');
         if (window.innerWidth <= 768) {
@@ -311,11 +338,8 @@
         }
     }
 
-    // Menghindari menu tertutup saat link diklik
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
+    document.querySelector('.nav-menu').addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 </script>
 
