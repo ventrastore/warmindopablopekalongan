@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang | Warmindo Pablo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --w-red: #cc0000;
@@ -13,8 +14,59 @@
             --card-bg: #0c0c0c;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* --- LOADING SCREEN STYLE --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
 
+        .loader-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: pulse-logo 1.5s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--w-red), var(--w-yellow), transparent);
+            animation: loading-slide 1.2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--w-red)); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        @keyframes loading-slide { 100% { left: 100%; } }
+
+        .loader-hidden { opacity: 0; visibility: hidden; }
+
+        /* --- BASE STYLE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--dark);
@@ -22,197 +74,101 @@
             background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
             padding-top: 100px;
             padding-bottom: 50px;
-            overflow-x: hidden; /* Mencegah scroll horizontal */
+            overflow-x: hidden;
         }
-
+        
         /* --- NAVBAR --- */
-        .navbar {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1200px;
-            z-index: 1000;
-            background: #ffffff;
-            border-radius: 100px;
-            padding: 10px 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            transition: all 0.4s ease;
-        }
-
-        .nav-brand {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            color: var(--w-red);
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
+        .navbar { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1200px; z-index: 1000; background: #ffffff; border-radius: 100px; padding: 10px 35px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); transition: all 0.4s ease; }
+        .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--w-red); text-decoration: none; letter-spacing: 2px; }
         .nav-menu { display: flex; gap: 8px; }
-
-        .nav-link {
-            font-family: 'Poppins', sans-serif;
-            color: #333;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 50px;
-            white-space: nowrap;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
+        .nav-link { font-family: 'Poppins', sans-serif; color: #333; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 10px 20px; border-radius: 50px; white-space: nowrap; text-transform: uppercase; transition: 0.3s; }
         .nav-link.active { background: var(--w-yellow); color: var(--dark); }
+        .menu-icon, .close-icon { display: none; color: var(--w-red); font-size: 1.5rem; cursor: pointer; }
 
-        .menu-icon, .close-icon {
-            display: none;
-            color: var(--w-red);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* --- MOBILE NAVBAR --- */
         @media (max-width: 768px) {
-            .navbar {
-                width: 60px;
-                height: 60px;
-                padding: 0;
-                right: 20px;
-                left: auto;
-                transform: none;
-                justify-content: center;
-                border-radius: 30px;
-            }
-            .navbar.active-nav {
-                width: calc(100% - 40px);
-                height: 65px;
-                padding: 0 15px;
-                border-radius: 100px;
-                justify-content: space-between;
-            }
+            .navbar { width: 60px; height: 60px; padding: 0; right: 20px; left: auto; transform: none; justify-content: center; border-radius: 30px; }
+            .navbar.active-nav { width: calc(100% - 40px); height: 65px; padding: 0 15px; border-radius: 100px; justify-content: space-between; }
             .nav-brand { display: none; }
             .nav-menu { display: none; }
-            .navbar.active-nav .nav-menu { 
-                display: flex; 
-                flex: 1; 
-                justify-content: center; 
-                gap: 2px;
-            }
+            .navbar.active-nav .nav-menu { display: flex; flex: 1; justify-content: center; gap: 2px; }
             .nav-link { font-size: 0.7rem; padding: 8px 10px; }
             .menu-icon { display: block; position: absolute; }
             .navbar.active-nav .menu-icon { display: none; }
             .navbar.active-nav .close-icon { display: block; order: 2; }
         }
 
-        /* --- CONTENT AREA --- */
+        /* --- CONTENT --- */
         main { max-width: 1000px; margin: 0 auto; padding: 0 20px; text-align: center; }
-
-        .main-logo {
-            width: 180px; 
-            height: auto;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.4));
-        }
-
-        .header-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 15vw, 6rem);
-            line-height: 0.9;
-            margin-bottom: 10px;
-            background: linear-gradient(180deg, #fff 40%, #555 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sub-header {
-            color: var(--w-red); 
-            letter-spacing: 4px; 
-            font-weight: 800; 
-            font-family: 'Bebas Neue'; 
-            font-size: 1.2rem;
-        }
-
-        /* --- CARD STYLE --- */
-        .about-card {
-            background: var(--card-bg);
-            border-radius: 35px;
-            padding: 2px;
-            position: relative;
-            overflow: hidden;
-            margin-top: 40px;
-            text-align: left;
-        }
-
-        .about-card::before {
-            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, var(--w-red), transparent 30%);
-            animation: rotate-border 6s linear infinite;
-        }
-
+        .main-logo { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.4)); }
+        .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 15vw, 6rem); line-height: 0.9; margin-bottom: 10px; background: linear-gradient(180deg, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .sub-header { color: var(--w-red); letter-spacing: 4px; font-weight: 800; font-family: 'Bebas Neue'; font-size: 1.2rem; }
+        
+        .about-card { background: var(--card-bg); border-radius: 35px; padding: 2px; position: relative; overflow: hidden; margin-top: 40px; text-align: left; }
+        .about-card::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, var(--w-red), transparent 30%); animation: rotate-border 6s linear infinite; }
         @keyframes rotate-border { 100% { transform: rotate(360deg); } }
-
-        .card-inner {
-            background: var(--card-bg);
-            border-radius: 33px;
-            padding: 40px; /* Default Desktop */
-            position: relative;
-            z-index: 1;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #ddd;
-            margin-bottom: 25px;
-        }
-
+        
+        .card-inner { background: var(--card-bg); border-radius: 33px; padding: 40px; position: relative; z-index: 1; }
+        .about-text { font-size: 1.1rem; line-height: 1.8; color: #ddd; margin-bottom: 25px; }
         .highlight-red { color: var(--w-red); font-weight: 700; }
-        .highlight-yellow { color: var(--w-yellow); font-weight: 700; }
-
-        .quote {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(1.8rem, 8vw, 2.5rem);
-            color: white;
-            border-left: 6px solid var(--w-red);
-            padding-left: 20px;
-            margin: 30px 0;
-            line-height: 1.1;
-        }
-
-        .grid-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 40px;
-        }
-
-        .stat-item {
-            text-align: center;
-            background: rgba(255,255,255,0.03);
-            padding: 20px;
-            border-radius: 20px;
-        }
-
+        
+        .quote { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 8vw, 2.5rem); color: white; border-left: 6px solid var(--w-red); padding-left: 20px; margin: 30px 0; line-height: 1.1; }
+        
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 40px; }
+        .stat-item { text-align: center; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; }
         .stat-item h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--w-yellow); }
         .stat-item p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
 
-        /* --- MOBILE ADJUSTMENTS --- */
+        /* --- WIFI BOX REPAIRED --- */
+        .wifi-box { 
+            margin-top: 40px; 
+            background: linear-gradient(145deg, #1a1a1a, #000); 
+            border: 1px solid rgba(255, 204, 0, 0.3); 
+            border-radius: 25px; 
+            padding: 25px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
+        .wifi-icon-circle { width: 60px; height: 60px; background: var(--w-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.8rem; flex-shrink: 0; box-shadow: 0 0 20px rgba(255, 204, 0, 0.4); }
+        .wifi-info { text-align: left; }
+        .wifi-info label { 
+            display: block; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--w-yellow); 
+            margin-bottom: 5px; 
+            font-weight: 800;
+        }
+        .wifi-info span { 
+            font-family: 'Bebas Neue', sans-serif; 
+            font-size: 1.8rem; 
+            letter-spacing: 1px; 
+            color: #fff; 
+            display: block;
+            font-style: normal; /* Memastikan tidak miring */
+            text-transform: uppercase; /* Menyamakan dengan gambar */
+        }
+        .wifi-divider { width: 1px; height: 50px; background: rgba(255,255,255,0.1); }
+
         @media (max-width: 600px) {
-            body { padding-top: 120px; }
-            .card-inner { padding: 25px 20px; } /* Padding lebih kecil agar teks luas */
-            .about-text { font-size: 1rem; text-align: justify; }
-            .sub-header { letter-spacing: 2px; font-size: 1rem; }
-            .grid-stats { grid-template-columns: 1fr 1fr; } /* Statistik jadi 2 kolom */
-            .stat-item:last-child { grid-column: span 2; } /* Item terakhir penuh di bawah */
+            .card-inner { padding: 25px 20px; }
+            .grid-stats { grid-template-columns: 1fr 1fr; }
+            .stat-item:last-child { grid-column: span 2; }
+            .wifi-box { flex-direction: column; text-align: center; }
+            .wifi-info { text-align: center; }
+            .wifi-divider { display: none; }
         }
     </style>
 </head>
 <body>
+
+<div id="loader">
+    <img src="Logo.png" alt="Pablo Logo" class="loader-logo">
+    <div class="loader-bar"></div>
+    <p style="margin-top: 15px; font-family: 'Bebas Neue'; letter-spacing: 2px; color: var(--w-yellow);">Menuju Ke Tentang....</p>
+</div>
 
 <nav class="navbar" id="mainNav" onclick="toggleMenu()">
     <div class="menu-icon">☰</div> 
@@ -222,7 +178,6 @@
         <a href="index.html" class="nav-link">MENU</a>
         <a href="tentang.html" class="nav-link active">TENTANG</a>
         <a href="lokasi.html" class="nav-link">LOKASI</a>
-        <a href="wifi.html" class="nav-link">WIFI</a>
     </div>
 </nav>
 
@@ -231,22 +186,18 @@
     
     <header style="margin-bottom: 30px;">
         <h1 class="header-title">OUR STORY</h1>
-        <p class="sub-header">DI BALIK MEJA PABLO</p>
+        <p class="sub-header">DI ATAS MEJA PABLO</p>
     </header>
 
     <div class="about-card">
         <div class="card-inner">
             <p class="about-text">
-                Berdiri sejak malam yang lapar, <span class="highlight-red">Warmindo Pablo</span> bukanlah sekedar tempat makan mie instan biasa. Kami adalah markas bagi para pejuang malam, mahasiswa deadline, dan pencari rasa yang berani.
+                Berdiri sejak malam yang lapar, <span class="highlight-red">Warmindo Pablo</span> bukanlah sekadar tempat makan mie instan biasa. Kami adalah markas bagi para pejuang malam, mahasiswa deadline,pencari rasa yang berani.
             </p>
             
             <div class="quote">
                 "TIDAK HANYA MENYAJIKAN MIE, KAMI MENYAJIKAN KENYAMANAN."
             </div>
-
-            <p class="about-text">
-                Dengan resep rahasia berkonsep <span class="highlight-yellow">"Mafia Style"</span>, setiap mangkuk mie diracik melalui seleksi ketat bumbu dan tingkat kematangan yang presisi. Karakter rasanya tegas, kuat, namun tetap seimbang. Pengunjung bebas menentukan level pedas, memilih topping favorit, lalu melengkapinya dengan sajian kopi yang diracik khusus.
-            </p>
 
             <div class="grid-stats">
                 <div class="stat-item">
@@ -254,12 +205,27 @@
                     <p>Loyalitas Rasa</p>
                 </div>
                 <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>Open</p>
+                    <h3>09:00</h3>
+                    <p>OPEN SETIAP HARI</p>
                 </div>
                 <div class="stat-item">
-                    <h3>FAST ORDER</h3>
-                    <p>Pelayanan Cepat</p>
+                    <h3>FAST</h3>
+                    <p>Pelayanan</p>
+                </div>
+            </div>
+
+            <div class="wifi-box">
+                <div class="wifi-icon-circle">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <div class="wifi-info">
+                    <label>Network ID</label>
+                    <span>WARMINDO_PABLO_FREE</span>
+                </div>
+                <div class="wifi-divider"></div>
+                <div class="wifi-info">
+                    <label>Password</label>
+                    <span>MAKANMIEPABLO</span>
                 </div>
             </div>
         </div>
@@ -267,19 +233,20 @@
 </main>
 
 <script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('loader-hidden');
+        }, 1200); 
+    });
+
     function toggleMenu() {
         const nav = document.getElementById('mainNav');
         if (window.innerWidth <= 768) {
             nav.classList.toggle('active-nav');
         }
     }
-    // Mencegah menu tertutup saat klik link di dalamnya
-    document.querySelector('.nav-menu').addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
 </script>
 
 </body>
 </html>
-
-
