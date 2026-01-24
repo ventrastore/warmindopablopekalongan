@@ -13,6 +13,58 @@
             --card-bg: #0c0c0c;
         }
 
+        /* --- LOADING SCREEN STYLE --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: pulse-logo 1.5s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--w-red), var(--w-yellow), transparent);
+            animation: loading-slide 1.2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--w-red)); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        @keyframes loading-slide { 100% { left: 100%; } }
+
+        .loader-hidden { opacity: 0; visibility: hidden; }
+
+        /* --- BASE STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -51,7 +103,7 @@
             letter-spacing: 2px;
         }
 
-        .nav-menu { display: flex; gap: 8px; transition: 0.3s; }
+        .nav-menu { display: flex; gap: 8px; }
 
         .nav-link {
             font-family: 'Poppins', sans-serif;
@@ -67,61 +119,24 @@
         }
 
         .nav-link.active { background: var(--w-yellow); color: var(--dark); }
-        .nav-link:hover:not(.active) { background: #f0f0f0; }
 
         .menu-icon, .close-icon {
             display: none;
             color: var(--w-red);
             font-size: 1.5rem;
-            font-weight: bold;
             cursor: pointer;
         }
 
-        /* --- MOBILE RESPONSIVE --- */
+        /* --- MOBILE NAVBAR --- */
         @media (max-width: 768px) {
-            .navbar {
-                left: auto;
-                right: 20px;
-                top: 20px;
-                transform: none;
-                width: 60px;
-                height: 60px;
-                padding: 0;
-                overflow: hidden;
-                justify-content: center;
-                border-radius: 30px;
-            }
-
-            .navbar.active-nav {
-                width: calc(100% - 40px);
-                height: 65px; 
-                padding: 0 15px;
-                justify-content: space-between;
-                border-radius: 100px;
-            }
-
+            .navbar { left: auto; right: 20px; top: 20px; transform: none; width: 60px; height: 60px; padding: 0; justify-content: center; border-radius: 30px; }
+            .navbar.active-nav { width: calc(100% - 40px); height: 65px; padding: 0 15px; justify-content: space-between; border-radius: 100px; }
             .nav-brand { display: none; }
-            
-            .nav-menu { 
-                opacity: 0; 
-                visibility: hidden; 
-                gap: 2px; 
-                display: flex;
-                flex: 1;
-                justify-content: center;
-            }
-            
-            .navbar.active-nav .nav-menu { 
-                opacity: 1; 
-                visibility: visible; 
-            }
-
+            .nav-menu { display: none; flex: 1; justify-content: center; gap: 2px; }
+            .navbar.active-nav .nav-menu { display: flex; }
             .nav-link { font-size: 0.75rem; padding: 8px 12px; }
-
-            .menu-icon { display: block; position: absolute; font-size: 1.8rem; }
+            .menu-icon { display: block; position: absolute; }
             .navbar.active-nav .menu-icon { display: none; }
-
-            .close-icon { display: none; font-size: 1.4rem; }
             .navbar.active-nav .close-icon { display: block; order: 2; }
         }
 
@@ -186,34 +201,43 @@
             height: 350px;
             border-radius: 15px;
             overflow: hidden;
-            /* Filter estetika agar peta tampak menyatu dengan tema dark */
             filter: grayscale(1) contrast(1.2) invert(0.9);
             border: 1px solid #333;
         }
 
-        .info-item { margin-bottom: 20px; }
-        .info-item h4 { color: var(--w-red); font-family: 'Bebas Neue'; letter-spacing: 2px; }
-        .info-item p { color: #ccc; font-size: 0.95rem; }
+        .info-item { margin-bottom: 25px; }
+        .info-item h4 { color: var(--w-red); font-family: 'Bebas Neue'; letter-spacing: 2px; font-size: 1.3rem; margin-bottom: 5px; }
+        .info-item p { color: #ccc; font-size: 1rem; line-height: 1.6; }
 
         .btn-maps {
             display: inline-block;
             background: var(--w-red);
             color: white;
             text-decoration: none;
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
             font-weight: 700;
-            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(204, 0, 0, 0.3);
         }
         
         .btn-maps:hover {
             background: var(--w-yellow);
             color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
         }
     </style>
 </head>
 <body>
+
+<div id="loader">
+    <img src="Logo.png" alt="Pablo Logo" class="loader-logo">
+    <div class="loader-bar"></div>
+    <p style="margin-top: 15px; font-family: 'Bebas Neue'; letter-spacing: 2px; color: var(--w-yellow);">MENCARI KOORDINAT PABLO...</p>
+</div>
 
 <nav class="navbar" id="mainNav" onclick="toggleMenu()">
     <div class="menu-icon">☰</div> 
@@ -223,14 +247,13 @@
         <a href="index.html" class="nav-link">MENU</a>
         <a href="tentang.html" class="nav-link">TENTANG</a>
         <a href="lokasi.html" class="nav-link active">LOKASI</a>
-        <a href="wifi.html" class="nav-link">WIFI</a>
     </div>
 </nav>
 
 <main>
     <header style="margin-bottom: 40px;">
         <h1 class="logo-text">MARKAS PABLO</h1>
-        <p style="color: var(--w-red); letter-spacing: 5px; font-weight: 800; font-family: 'Bebas Neue';">WARUNG MAFIA</p>
+        <p style="color: var(--w-red); letter-spacing: 5px; font-weight: 800; font-family: 'Bebas Neue'; font-size: 1.2rem;">WARUNG MAFIA</p>
     </header>
 
     <div class="container">
@@ -238,7 +261,7 @@
             <div class="card-inner">
                 <div class="category-header"><h2>TITIK KOORDINAT</h2></div>
                 <div class="map-wrapper">
-                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9190864027423!2d109.66581977410353!3d-6.900280193098972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70250cd3c4c33f%3A0xc5bbdb7b766391a7!2sWARMINDO%20PABLO!5e0!3m2!1sen!2sid!4v1768559103567!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.0263654060824!2d109.6588!3d-6.8874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e702425979509f7%3A0xc39f863866385f!2sJl.%20Podosugih%2C%20Pekalongan%20Barat!5e0!3m2!1sid!2sid!4v1700000000000" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
@@ -252,15 +275,25 @@
                 </div>
                 <div class="info-item">
                     <h4>OPERASIONAL</h4>
-                    <p>24 JAM NON-STOP</p>
+                    <p>24 JAM NON-STOP <br><span style="color: var(--w-yellow); font-size: 0.8rem;">SIAP MELAYANI KELAPARAN</span></p>
                 </div>
-                <a href="https://maps.app.goo.gl/p4HmRKjUAmaom68a6" target="https://maps.app.goo.gl/p4HmRKjUAmaom68a6" class="btn-maps">BUKA GOOGLE MAPS</a>
+                <div style="margin-top: 30px;">
+                    <a href="https://maps.app.goo.gl/YourGoogleMapsLink" target="_blank" class="btn-maps">BUKA GOOGLE MAPS</a>
+                </div>
             </div>
         </div>
     </div>
 </main>
 
 <script>
+    // PRELOADER SCRIPT
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('loader-hidden');
+        }, 1200); 
+    });
+
     function toggleMenu() {
         const nav = document.getElementById('mainNav');
         if (window.innerWidth <= 768) {
@@ -268,11 +301,9 @@
         }
     }
 
-    // Mencegah link memicu fungsi toggleMenu() milik navbar
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-        });
+    // Stop propagation pada menu
+    document.querySelector('.nav-menu').addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 </script>
 
