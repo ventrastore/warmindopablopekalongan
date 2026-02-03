@@ -2,251 +2,168 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang | Warmindo Pablo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tentang Kami | Warmindo Pablo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
+        /* --- CORE VARIABLES --- */
         :root {
-            --w-red: #cc0000;
-            --w-yellow: #ffcc00;
-            --dark: #000000;
-            --card-bg: #0c0c0c;
+            --w-red: #cc0000; --w-yellow: #ffcc00;
+            --bg: #050505; --card: #111111; --text: #ffffff;
+            --nav: rgba(255, 255, 255, 0.05); --glass: blur(15px);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body.light-mode {
+            --bg: #f8f9fa; --card: #ffffff; --text: #1a1a1a;
+            --nav: rgba(0, 0, 0, 0.03); --border: rgba(0, 0, 0, 0.1);
         }
 
-        /* --- LOADING SCREEN STYLE --- */
+        /* --- BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); 
+            transition: background 0.5s ease; overflow-x: hidden;
+        }
+
+        /* --- MODERN LOADER --- */
         #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s;
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
+        .loader-logo { width: 100px; animation: pulse 1.5s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--w-red)); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--w-red)); } }
+        .loader-hidden { opacity: 0; visibility: hidden; transition: 0.8s; }
 
-        .loader-logo {
-            width: 120px;
-            margin-bottom: 20px;
-            animation: pulse-logo 1.5s ease-in-out infinite;
+        /* --- NAVIGATION --- */
+        .navbar {
+            position: fixed; top: 0; width: 100%; height: 75px; z-index: 9000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 7%; background: var(--nav); backdrop-filter: var(--glass);
+            border-bottom: 1px solid var(--border);
         }
+        .nav-brand { font-family: 'Bebas Neue'; font-size: 2.2rem; color: var(--w-red); text-decoration: none; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a.active { color: var(--w-yellow); }
 
-        .loader-bar {
-            width: 200px;
-            height: 3px;
-            background: #222;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .loader-bar::after {
-            content: '';
-            position: absolute;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--w-red), var(--w-yellow), transparent);
-            animation: loading-slide 1.2s infinite;
-        }
-
-        @keyframes pulse-logo {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--w-red)); }
-            100% { transform: scale(0.9); opacity: 0.7; }
-        }
-
-        @keyframes loading-slide { 100% { left: 100%; } }
-
-        .loader-hidden { opacity: 0; visibility: hidden; }
-
-        /* --- BASE STYLE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark);
-            color: white;
-            background-image: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
-            padding-top: 100px;
-            padding-bottom: 50px;
-            overflow-x: hidden;
-        }
+        /* --- MOBILE MENU --- */
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 9999; padding: 10px; }
+        .burger span { width: 28px; height: 3px; background: var(--w-red); transition: 0.4s; border-radius: 2px; }
         
-        /* --- NAVBAR --- */
-        .navbar { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1200px; z-index: 1000; background: #ffffff; border-radius: 100px; padding: 10px 35px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); transition: all 0.4s ease; }
-        .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--w-red); text-decoration: none; letter-spacing: 2px; }
-        .nav-menu { display: flex; gap: 8px; }
-        .nav-link { font-family: 'Poppins', sans-serif; color: #333; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 10px 20px; border-radius: 50px; white-space: nowrap; text-transform: uppercase; transition: 0.3s; }
-        .nav-link.active { background: var(--w-yellow); color: var(--dark); }
-        .menu-icon, .close-icon { display: none; color: var(--w-red); font-size: 1.5rem; cursor: pointer; }
+        .mobile-overlay {
+            position: fixed; inset: 0; background: var(--bg); z-index: 9500;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            clip-path: circle(0% at 90% 5%); transition: 0.7s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .mobile-overlay.open { clip-path: circle(150% at 90% 5%); }
+        .mobile-overlay a { font-family: 'Bebas Neue'; font-size: 3.5rem; color: var(--text); text-decoration: none; margin: 15px 0; opacity: 0; transform: translateY(30px); transition: 0.4s; }
+        .mobile-overlay.open a { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 768px) {
-            .navbar { width: 60px; height: 60px; padding: 0; right: 20px; left: auto; transform: none; justify-content: center; border-radius: 30px; }
-            .navbar.active-nav { width: calc(100% - 40px); height: 65px; padding: 0 15px; border-radius: 100px; justify-content: space-between; }
-            .nav-brand { display: none; }
-            .nav-menu { display: none; }
-            .navbar.active-nav .nav-menu { display: flex; flex: 1; justify-content: center; gap: 2px; }
-            .nav-link { font-size: 0.7rem; padding: 8px 10px; }
-            .menu-icon { display: block; position: absolute; }
-            .navbar.active-nav .menu-icon { display: none; }
-            .navbar.active-nav .close-icon { display: block; order: 2; }
+            .nav-links { display: none; }
+            .burger { display: flex; }
+            .burger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+            .burger.active span:nth-child(2) { opacity: 0; }
+            .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -8px); }
         }
 
         /* --- CONTENT --- */
-        main { max-width: 1000px; margin: 0 auto; padding: 0 20px; text-align: center; }
-        .main-logo { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.4)); }
-        .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 15vw, 6rem); line-height: 0.9; margin-bottom: 10px; background: linear-gradient(180deg, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .sub-header { color: var(--w-red); letter-spacing: 4px; font-weight: 800; font-family: 'Bebas Neue'; font-size: 1.2rem; }
-        
-        .about-card { background: var(--card-bg); border-radius: 35px; padding: 2px; position: relative; overflow: hidden; margin-top: 40px; text-align: left; }
-        .about-card::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, var(--w-red), transparent 30%); animation: rotate-border 6s linear infinite; }
-        @keyframes rotate-border { 100% { transform: rotate(360deg); } }
-        
-        .card-inner { background: var(--card-bg); border-radius: 33px; padding: 40px; position: relative; z-index: 1; }
-        .about-text { font-size: 1.1rem; line-height: 1.8; color: #ddd; margin-bottom: 25px; }
-        .highlight-red { color: var(--w-red); font-weight: 700; }
-        
-        .quote { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 8vw, 2.5rem); color: white; border-left: 6px solid var(--w-red); padding-left: 20px; margin: 30px 0; line-height: 1.1; }
-        
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 40px; }
-        .stat-item { text-align: center; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; }
-        .stat-item h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--w-yellow); }
-        .stat-item p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        main { padding: 110px 7% 50px; max-width: 1200px; margin: 0 auto; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* --- WIFI BOX REPAIRED --- */
-        .wifi-box { 
-            margin-top: 40px; 
-            background: linear-gradient(145deg, #1a1a1a, #000); 
-            border: 1px solid rgba(255, 204, 0, 0.3); 
-            border-radius: 25px; 
-            padding: 25px; 
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        .card { 
+            background: var(--card); padding: 40px; border-radius: 35px; 
+            border: 1px solid var(--border); margin-bottom: 25px; transition: 0.4s;
         }
-        .wifi-icon-circle { width: 60px; height: 60px; background: var(--w-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.8rem; flex-shrink: 0; box-shadow: 0 0 20px rgba(255, 204, 0, 0.4); }
-        .wifi-info { text-align: left; }
-        .wifi-info label { 
-            display: block; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            color: var(--w-yellow); 
-            margin-bottom: 5px; 
-            font-weight: 800;
-        }
-        .wifi-info span { 
-            font-family: 'Bebas Neue', sans-serif; 
-            font-size: 1.8rem; 
-            letter-spacing: 1px; 
-            color: #fff; 
-            display: block;
-            font-style: normal; /* Memastikan tidak miring */
-            text-transform: uppercase; /* Menyamakan dengan gambar */
-        }
-        .wifi-divider { width: 1px; height: 50px; background: rgba(255,255,255,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
 
-        @media (max-width: 600px) {
-            .card-inner { padding: 25px 20px; }
-            .grid-stats { grid-template-columns: 1fr 1fr; }
-            .stat-item:last-child { grid-column: span 2; }
-            .wifi-box { flex-direction: column; text-align: center; }
-            .wifi-info { text-align: center; }
-            .wifi-divider { display: none; }
-        }
+        /* --- FAB --- */
+        .theme-fab { position: fixed; bottom: 30px; left: 30px; width: 65px; height: 65px; background: var(--card); border: 2px solid var(--w-red); color: var(--text); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 9999; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .wa-fab { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #25d366; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 9999; box-shadow: 0 10px 25px rgba(37,211,102,0.4); text-decoration: none; }
     </style>
 </head>
 <body>
 
-<div id="loader">
-    <img src="Logo.png" alt="Pablo Logo" class="loader-logo">
-    <div class="loader-bar"></div>
-    <p style="margin-top: 15px; font-family: 'Bebas Neue'; letter-spacing: 2px; color: var(--w-yellow);">Menuju Ke Tentang....</p>
-</div>
+<div id="loader"><img src="Logo.png" class="loader-logo"></div>
 
-<nav class="navbar" id="mainNav" onclick="toggleMenu()">
-    <div class="menu-icon">☰</div> 
-    <div class="close-icon">✕</div>
-    <a href="index.html" class="nav-brand">WARMINDO PABLO</a>
-    <div class="nav-menu">
-        <a href="index.html" class="nav-link">MENU</a>
-        <a href="tentang.html" class="nav-link active">TENTANG</a>
-        <a href="lokasi.html" class="nav-link">LOKASI</a>
+<nav class="navbar">
+    <a href="index.html" class="nav-brand">cafe|<span style="color:var(--text)">PABLO</span></a>
+    <div class="nav-links">
+        <a href="index.html">Menu</a>
+        <a href="tentang.html" class="active">Tentang</a>
+        <a href="lokasi.html">Lokasi</a>
+    </div>
+    <div class="burger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
     </div>
 </nav>
 
+<div class="mobile-overlay" id="mobileOverlay">
+    <a href="index.html" onclick="toggleMenu()">MENU</a>
+    <a href="tentang.html" onclick="toggleMenu()">TENTANG</a>
+    <a href="lokasi.html" onclick="toggleMenu()">LOKASI</a>
+</div>
+
 <main>
-    <img src="Logo.png" alt="Logo Pablo" class="main-logo">
-    
-    <header style="margin-bottom: 30px;">
-        <h1 class="header-title">OUR STORY</h1>
-        <p class="sub-header">DI ATAS MEJA PABLO</p>
-    </header>
+    <div class="reveal" style="text-align:center; margin-bottom:60px;">
+        <img src="Logo.png" style="width:160px; margin-bottom:20px; filter: drop-shadow(0 10px 30px rgba(204,0,0,0.5));">
+        <h1 style="font-family:'Bebas Neue'; font-size:4.5rem; letter-spacing:3px;">LA FAMILIA</h1>
+        <p style="color:var(--w-red); font-weight:800; letter-spacing:6px; font-size:1rem;">ESTABLISHED 2024 - PEKALONGAN</p>
+    </div>
 
-    <div class="about-card">
-        <div class="card-inner">
-            <p class="about-text">
-                Berdiri sejak malam yang lapar, <span class="highlight-red">Warmindo Pablo</span> bukanlah sekadar tempat makan mie instan biasa. Kami adalah markas bagi para pejuang malam, mahasiswa deadline,pencari rasa yang berani.
-            </p>
-            
-            <div class="quote">
-                "TIDAK HANYA MENYAJIKAN MIE, KAMI MENYAJIKAN KENYAMANAN."
-            </div>
+    <div class="card reveal" style="line-height:2; text-align:justify;">
+        <h2 style="font-family:'Bebas Neue'; color:var(--w-yellow); font-size:2rem; margin-bottom:15px; border-left: 5px solid var(--w-red); padding-left: 15px;">KARYA RASA </h2>
+        <p>Warmindo Pablo bukan sekadar tempat makan mie instan. Kami adalah "Safe House" bagi para pecinta rasa yang mencari kehangatan di tengah kota. Setiap mangkuk yang kami sajikan adalah kombinasi antara bumbu rahasia dan semangat persaudaraan yang kental.</p>
+    </div>
 
-            <div class="grid-stats">
-                <div class="stat-item">
-                    <h3>100%</h3>
-                    <p>Loyalitas Rasa</p>
-                </div>
-                <div class="stat-item">
-                    <h3>START 09:00 AM</h3>
-                    <p>OPEN</p>
-                </div>
-                <div class="stat-item">
-                    <h3>FAST</h3>
-                    <p>Pelayanan</p>
-                </div>
-            </div>
-
-            <div class="wifi-box">
-                <div class="wifi-icon-circle">
-                    <i class="fas fa-wifi"></i>
-                </div>
-                <div class="wifi-info">
-                    <label>Network ID</label>
-                    <span>WARMINDO_PABLO_FREE</span>
-                </div>
-                <div class="wifi-divider"></div>
-                <div class="wifi-info">
-                    <label>Password</label>
-                    <span>MAKANMIEPABLO</span>
-                </div>
-            </div>
+    <div class="grid">
+        <div class="card reveal" style="text-align:center;">
+            <i class="fas fa-wifi fa-3x" style="color:var(--w-red); margin-bottom:20px;"></i>
+            <h3 style="font-family:'Bebas Neue'; font-size:2.2rem;">KONEKSI WIFI</h3>
+            <p>----</p>
+            <p style="color:var(--w-yellow); font-weight:bold;">PASS : ----</p>
+        </div>
+        <div class="card reveal" style="text-align:center;">
+            <i class="fas fa-clock fa-3x" style="color:var(--w-red); margin-bottom:20px;"></i>
+            <h3 style="font-family:'Bebas Neue'; font-size:2.2rem;">SIAGA OPEN</h3>
+            <p>SELALU TERBUKA BOS !</p>
+            <p style="color:var(--w-yellow); font-weight:bold;">BUKA SENIATNYA</p>
         </div>
     </div>
 </main>
 
-<script>
-    window.addEventListener('load', () => {
-        const loader = document.getElementById('loader');
-        setTimeout(() => {
-            loader.classList.add('loader-hidden');
-        }, 1200); 
-    });
+<div class="theme-fab" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></div>
 
+
+<script>
     function toggleMenu() {
-        const nav = document.getElementById('mainNav');
-        if (window.innerWidth <= 768) {
-            nav.classList.toggle('active-nav');
-        }
+        document.querySelector('.burger').classList.toggle('active');
+        document.getElementById('mobileOverlay').classList.toggle('open');
+        document.body.style.overflow = document.getElementById('mobileOverlay').classList.contains('open') ? 'hidden' : 'auto';
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        const icon = document.getElementById('themeIcon');
+        const isLight = document.body.classList.contains('light-mode');
+        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        localStorage.setItem('pablo-theme', isLight ? 'light' : 'dark');
+    }
+    if(localStorage.getItem('pablo-theme') === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('themeIcon').className = 'fas fa-sun';
+    }
+    function reveal() {
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('active');
+        });
+    }
+    window.addEventListener('scroll', reveal);
+    window.onload = () => {
+        setTimeout(() => { document.getElementById('loader').classList.add('loader-hidden'); reveal(); }, 1000);
     }
 </script>
-
 </body>
 </html>
